@@ -1,0 +1,30 @@
+﻿
+@{
+    Layout = null;
+}
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+<h3 class="p-3">MVC Kamp Tablo Örneği</h3>
+<br />
+<div class="container">
+    <table class="table table-bordered ">
+        <tr>
+            <th>ID</th>
+            <th>Adı</th>
+            <th>Açıklama</th>
+            <th>Durum</th>
+            <th>Aksiyonlar</th>
+        </tr>
+        <tr>
+            <td>1</td>
+            <td>Eğitim</td>
+            <td>Açıklama</td>
+            <td>True</td>
+            <td><button class="btn btn-danger">Sil</button> <button class="btn btn-warning">Güncelle</button></td>
+        </tr>
+    </table>
+    <br />
+    <a href="/Category/AddCategory" class="btn btn-success">Kategori Ekle</a>
+</div>
+

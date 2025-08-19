@@ -1,0 +1,35 @@
+﻿@using EntityLayer.Concrete
+@model EntityLayer.Concrete.Category
+@{
+    Layout = null;
+}
+
+
+<link href="~/Content/bootstrap.min.css" rel="stylesheet" />
+
+<div class="container pt-5">
+    <h2>Kategori Ekle</h2>
+    @using (Html.BeginForm("AddCategory", "Category", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <div class="form-group">
+            @Html.Label("Kategori Adı")
+            @Html.TextBoxFor(model => model.CategoryName, new { @class = "form-control", placeholder = "Kategori İsmi Giriniz" })
+            @Html.ValidationMessageFor(model => model.CategoryName, "", new { @class = "text-danger" })
+            <br />
+            @Html.Label("Kategori Açıklaması")
+            @Html.TextBoxFor(model => model.CategoryDescription, new { @class = "form-control", placeholder = "Kategori Açıklaması Giriniz" })
+            @Html.ValidationMessageFor(model => model.CategoryDescription, "", new { @class = "text-danger" })
+            <br />
+            @Html.Label("Kategori Durumu")
+            <div class="form-check">
+                @Html.RadioButtonFor(model => model.CategoryStatus, true, new { @class = "form-check-input", id = "statusActive" })
+                @Html.Label("Aktif", new { @class = "form-check-label", @for = "statusActive" })
+            </div>
+            <div class="form-check">
+                @Html.RadioButtonFor(model => model.CategoryStatus, false, new { @class = "form-check-input", id = "statusInactive" })
+                @Html.Label("Pasif", new { @class = "form-check-label", @for = "statusInactive" })
+            </div>
+            <br />
+            <button class="btn btn-success">Kaydet</button>
+        </div>
+</div>
