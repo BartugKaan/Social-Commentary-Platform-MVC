@@ -12,9 +12,8 @@ namespace BusinessLayer.ValidationRules
             RuleFor(x => x.CategoryDescription)
                 .NotEmpty().WithMessage("Kategori açıklaması boş olamaz!");
             RuleFor(x => x.CategoryName)
-                .MinimumLength(5).WithMessage("Kategori ismi en az 3 karakter olmalıdır!")
+                .MinimumLength(4).WithMessage("Kategori ismi en az 4 karakter olmalıdır!")
                 .MaximumLength(50).WithMessage("Kategori ismi en fazla 50 karakter olmalıdır!");              
-
         }
     }
 }

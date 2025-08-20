@@ -1,0 +1,40 @@
+﻿@using EntityLayer.Concrete
+@model Writer
+@{
+    ViewBag.Title = "AddWriter";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container pt-5">
+    <h2>Kategori Ekle</h2>
+    @using (Html.BeginForm("AddWriter", "AdminWriter", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        <div class="form-group">
+            @Html.Label("Yazar Adı")
+            @Html.TextBoxFor(model => model.WriterName, new { @class = "form-control", placeholder = "Yazar İsmi Giriniz" })
+            @Html.ValidationMessageFor(model => model.WriterName, "", new { @class = "text-danger" })
+            <br />
+            @Html.Label("Yazar Soyadı")
+            @Html.TextBoxFor(model => model.WriterSurname, new { @class = "form-control", placeholder = "Yazar Soyadı Giriniz" })
+            @Html.ValidationMessageFor(model => model.WriterSurname, "", new { @class = "text-danger" })
+            <br />
+            @Html.Label("Yazar Mail Adresi")
+            @Html.TextBoxFor(model => model.WriterMail, new { @class = "form-control", placeholder = "Mail Adresi Giriniz" })
+            @Html.ValidationMessageFor(model => model.WriterMail, "", new { @class = "text-danger" })
+            <br />
+            @Html.Label("Yazar Şifresi")
+            @Html.TextBoxFor(model => model.WriterPassword, new { @class = "form-control", placeholder = "Yazar Şifresi Giriniz" })
+            @Html.ValidationMessageFor(model => model.WriterPassword, "", new { @class = "text-danger" })
+            <br />
+            @Html.Label("Yazar Hakkında Açıklaması")
+            @Html.TextBoxFor(model => model.WriterAbout, new { @class = "form-control", placeholder = "Hakkında Kısmını Giriniz" })
+            @Html.ValidationMessageFor(model => model.WriterAbout, "", new { @class = "text-danger" })
+            <br />
+            @Html.Label("Yazar Görsel Linki")
+            @Html.TextBoxFor(model => model.WriterImage, new { @class = "form-control", placeholder = "Yazar Resim URL Giriniz" })
+            @Html.ValidationMessageFor(model => model.WriterImage, "", new { @class = "text-danger" })
+            <br />
+            <button class="btn btn-success">Kaydet</button>
+        </div>
+    }
+</div>
