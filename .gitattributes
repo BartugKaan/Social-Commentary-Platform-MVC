@@ -68,3 +68,4 @@
 *.js linguist-detectable=false
 *.scss linguist-detectable=false
 *.cshtml linguist-detectable=false
+*.less linguist-detectable=false
