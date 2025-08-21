@@ -31,6 +31,9 @@ namespace BusinessLayer.ValidationRules
                 .MaximumLength(50).WithMessage("Yazar Parolası en fazla 50 karakter olmalıdır!")
                 .Matches(@"^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d]{6,}$")
                 .WithMessage("Yazar Parolası en az bir büyük harf, bir küçük harf ve bir rakam içermelidir!");
+            RuleFor(x => x.WriterTitle)
+                .NotEmpty().WithMessage("Yazar Ünvanı boş olamaz!")
+                .MaximumLength(50).WithMessage("Yazar Ünvanı en fazla 50 karakter olmalıdır!");
 
         }
     }

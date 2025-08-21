@@ -31,9 +31,35 @@ namespace MvcProjeKampi.Controllers
         {
             WriterValiator validationRules = new WriterValiator();
             ValidationResult results = validationRules.Validate(writer);
-            if(results.IsValid)
+            if (results.IsValid)
             {
                 writerManager.WriterAdd(writer);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var item in results.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+            }
+            return View();
+        }
+        [HttpGet]
+        public ActionResult EditWriter(int id)
+        {
+            var writerValue = writerManager.GetById(id);
+            return View(writerValue);
+        }
+
+        [HttpPost]
+        public ActionResult EditWriter(Writer writer)
+        {
+            WriterValiator validationRules = new WriterValiator();
+            ValidationResult results = validationRules.Validate(writer);
+            if (results.IsValid)
+            {
+                writerManager.WriterUpdate(writer);
                 return RedirectToAction("Index");
             }
             else
