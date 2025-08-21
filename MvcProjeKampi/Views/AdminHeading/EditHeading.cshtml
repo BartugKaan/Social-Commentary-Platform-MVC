@@ -1,0 +1,17 @@
+﻿@using EntityLayer.Concrete
+@model Heading
+@{
+    ViewBag.Title = "EditHeading";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<h2>Başlık Güncelleme Sayfası</h2>
+@using (Html.BeginForm("EditHeading", "AdminHeaing", FormMethod.Post))
+{
+    <div class="container">
+        <div class="form-group">
+            @Html.Label("Başlık Id")
+            @Html.TextBoxFor(x => x.HeadingId, new { @class = "form-control", @readonly = "readonly" })  })
+        </div>
+    </div>
+}
