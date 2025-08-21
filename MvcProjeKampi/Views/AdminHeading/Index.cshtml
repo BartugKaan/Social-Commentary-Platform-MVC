@@ -1,0 +1,129 @@
+﻿@using EntityLayer.Concrete
+@model List<Heading>
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+@{
+    string color = "";
+
+}
+
+
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Başlıklar</h1>
+            </div>
+        </div>
+    </div><!-- /.container-fluid -->
+</section>
+<!-- Main content -->
+<section class="content">
+    <!-- Default box -->
+    <div class="card">
+        <div class="card-header pl-3">
+            <div class="vw-100 row">
+                <h3 class="card-title col-8">Başlık İşlemleri</h3>
+                <a class="btn btn-success" href="/AdminHeading/AddHeading">Yeni Başlık Ekle</a>
+            </div>
+        </div>
+        <div class="card-body p-0">
+            <table class="table table-striped projects">
+                <thead>
+                    <tr>
+                        <th style="width: 1%">
+                            #
+                        </th>
+                        <th style="width: 20%">
+                            Başlık Adı
+                        </th>
+                        <th style="width: 30%">
+                            Oluşturan Yazar
+                        </th>
+                        <th style="width: 8%" class="text-center">
+                            Kategori
+                        </th>
+                        <th style="width: 20%">
+                            İşlemler
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        switch (item.Category.CategoryName)
+                        {
+                            case "Tiyatro":
+                                color = "warning";
+                                break;
+
+                            case "Spor":
+                                color = "success";
+                                break;
+
+                            case "Yazılım":
+                                color = "info";
+                                break;
+
+                            case "Film":
+                                color = "secondary";
+                                break;
+
+                            default:
+                                color = "primary";
+                                break;
+                        }
+                        <tr>
+                            <th>
+                                @item.HeadingId
+                            </th>
+                            <td>
+                                <a>
+                                    @item.HeadingName
+                                </a>
+                                <br />
+                                <small>
+                                    @(((DateTime)item.HeadingDate).ToString("dd-MMM-yyyy"))
+                                </small>
+                            </td>
+                            <td>
+                                <ul class="list-inline">
+                                    <li class="list-inline-item">
+                                        <img alt="Avatar" class="table-avatar" src="@item.Writer.WriterImage" width="75" height="50">
+                                        <p>@item.Writer.WriterName @item.Writer.WriterSurname</p>
+                                    </li>
+                                </ul>
+                            </td>
+                            <td class="project-state">
+                                <span class="badge badge-@color">@item.Category.CategoryName</span>
+                            </td>
+                            <td class="project-actions text-right">
+                                <a class="btn btn-primary btn-sm" href="/AdminContent/ContentByHeading/@item.HeadingId">
+                                    <i class="fas fa-folder">
+                                    </i>
+                                    İçerikler
+                                </a>
+                                <a class="btn btn-info btn-sm" href="#">
+                                    <i class="fas fa-pencil-alt">
+                                    </i>
+                                    Düzenle
+                                </a>
+                                <a class="btn btn-danger btn-sm" href="#">
+                                    <i class="fas fa-trash">
+                                    </i>
+                                    Sil
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+        <!-- /.card-body -->
+    </div>
+    <!-- /.card -->
+</section>
