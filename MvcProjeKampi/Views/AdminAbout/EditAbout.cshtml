@@ -1,0 +1,26 @@
+﻿@using EntityLayer.Concrete
+@model EntityLayer.Concrete.About
+@{
+    ViewBag.Title = "EditAbout";
+    Layout = "~/Views/Shared/_AdminLayout.cshtml";
+}
+
+<div class="container pt-5">
+    <h2>Kategori Düzenle</h2>
+    @using (Html.BeginForm("EditAbout", "AdminAbout", FormMethod.Post, new { @class = "form-horizontal" }))
+    {
+        @Html.HiddenFor(model => model.AboutId)
+        <div class="form-group">
+            @Html.Label("Kategori Adı")
+            @Html.TextBoxFor(model => model.AboutDetails1, new { @class = "form-control", placeholder = "Hakkımzıda İlk Açıklamasını Giriniz" })
+            @Html.ValidationMessageFor(model => model.AboutDetails1, "", new { @class = "text-danger" })
+            <br />
+            @Html.Label("Kategori Açıklaması")
+            @Html.TextBoxFor(model => model.AboutDetails2, new { @class = "form-control", placeholder = "Hakkımzıda İkinci Açıklamasını Giriniz" })
+            @Html.ValidationMessageFor(model => model.AboutDetails2, "", new { @class = "text-danger" })
+            <br />
+            <button class="btn btn-success">Güncelle</button>
+            <a href="/AdminAbout/Index" class="btn btn-secondary">Geri Dön</a>
+        </div>
+    }
+</div>

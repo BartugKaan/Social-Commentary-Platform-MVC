@@ -1,0 +1,35 @@
+﻿<div class="modal" id="Modal1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Hakkımızda Yazısı Ekle</h3>
+                @{
+                    if (ViewBag.error != null)
+                    {
+                        <div class="alert alert-danger">
+                            @ViewBag.error
+                        </div>
+                    }
+                }
+
+            </div>
+            <form method="post" action="/AdminAbout/AddAbout">
+                <div class="modal-body">
+                    <label>Hakkımızda Metin 1 <span style="color:red">*</span></label>
+                    <input type="text" name="AboutDetails1" class="form-control" />
+                    <br />
+                    <label>Hakkımızda Metin 2  <span style="color:red">*</span></label>
+                    <input type="text" name="AboutDetails2" class="form-control" />
+                    <br />
+                    <label>Hakkımızda Görsel 1 </label>
+                    <input type="text" name="AboutImage1" class="form-control" />
+                    <br />
+                    <label>Hakkımızda Görsel 2 </label>
+                    <input type="text" name="AboutImage2" class="form-control" />
+                    <br />
+                    <button class="btn btn-success"> Kaydet</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
