@@ -75,10 +75,33 @@ namespace MvcProjeKampi.Controllers
             ViewBag.ctg = valueCategory;
             var headingValue = headingManager.GetById(id);
             return View(headingValue);
-
         }
 
-        
+        [HttpPost]
+        public ActionResult EditHeading(Heading heading)
+        {
+            HeadingValidator validationRules = new HeadingValidator();
+            ValidationResult result = validationRules.Validate(heading);
+            if (result.IsValid)
+            {
+                headingManager.UpdateHeading(heading);
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+            }
+            return View(heading);
+        }
 
+        public ActionResult DeleteHeading(int id)
+        {
+            var headingValue = headingManager.GetById(id);
+            headingManager.ChangeStatus(headingValue);
+            return RedirectToAction("Index");
+        }
     }
 }

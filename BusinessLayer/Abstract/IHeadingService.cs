@@ -12,7 +12,7 @@ namespace BusinessLayer.Abstract
         List<Heading> GetAll();
         void AddHeading(Heading heading);
         Heading GetById(int id);
-        void DeleteHeading(Heading heading);
+        void ChangeStatus(Heading heading);
         void UpdateHeading(Heading heading);
     }
 }

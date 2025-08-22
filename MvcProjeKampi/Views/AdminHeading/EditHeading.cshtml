@@ -6,12 +6,23 @@
 }
 
 <h2>Başlık Güncelleme Sayfası</h2>
-@using (Html.BeginForm("EditHeading", "AdminHeaing", FormMethod.Post))
+@using (Html.BeginForm("EditHeading", "AdminHeading", FormMethod.Post))
 {
     <div class="container">
         <div class="form-group">
             @Html.Label("Başlık Id")
-            @Html.TextBoxFor(x => x.HeadingId, new { @class = "form-control", @readonly = "readonly" })  })
+            @Html.TextBoxFor(x => x.HeadingId, new { @class = "form-control", @readonly = "readonly" })
+            <br />
+            @Html.Label("Başlık Adı")
+            @Html.TextBoxFor(x => x.HeadingName, new { @class = "form-control", @placeholder = "Başlık Adı Giriniz" })
+            @Html.ValidationMessageFor(model => model.HeadingName, "", new { @class = "text-danger" })
+            <br />
+            @Html.Label("Kategori")
+            @Html.DropDownListFor(x => x.CategoryId, (IEnumerable<SelectListItem>)ViewBag.ctg, new { @class = "form-control" })
+            <br />
+            @Html.HiddenFor(x => x.HeadingDate)
+            @Html.HiddenFor(x => x.WriterId)
+            <button class="btn btn-success">Kaydet</button>
         </div>
     </div>
 }

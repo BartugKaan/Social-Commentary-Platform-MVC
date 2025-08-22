@@ -23,9 +23,11 @@ namespace BusinessLayer.Concrete
             _headingDal.Insert(heading);
         }
 
-        public void DeleteHeading(Heading heading)
+        public void ChangeStatus(Heading heading)
         {
-            _headingDal.Delete(heading);
+            bool currentStatus = heading.HeadingStatus;
+            heading.HeadingStatus = !currentStatus;
+            _headingDal.Update(heading);
         }
 
         public List<Heading> GetAll()
