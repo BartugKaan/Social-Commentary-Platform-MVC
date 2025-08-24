@@ -134,6 +134,7 @@
     <Compile Include="Controllers\AdminContactController.cs" />
     <Compile Include="Controllers\AdminContentController.cs" />
     <Compile Include="Controllers\AdminHeadingController.cs" />
+    <Compile Include="Controllers\AdminMessageController.cs" />
     <Compile Include="Controllers\AdminWriterController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -2301,6 +2302,11 @@
     <Content Include="Views\AdminAbout\EditAbout.cshtml" />
     <Content Include="Views\AdminContact\Index.cshtml" />
     <Content Include="Views\AdminContact\GetContactDetails.cshtml" />
+    <Content Include="Views\AdminContact\MessageListMenu.cshtml" />
+    <Content Include="Views\AdminMessage\Inbox.cshtml" />
+    <Content Include="Views\AdminMessage\Sendbox.cshtml" />
+    <Content Include="Views\AdminMessage\NewMessage.cshtml" />
+    <Content Include="Views\AdminMessage\GetInboxMessageDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
