@@ -20,8 +20,13 @@ namespace BusinessLayer.Concrete
 
         public Admin GetAdmin(string username, string password)
         {
-            var hashedPassword = HashPassword(password);
-            return _adminDal.Get(x => x.AdminUserName == username && x.AdminPassword == hashedPassword);
+            // Önce username ile admin'i bulalım
+            var admin = _adminDal.Get(x => x.AdminUserName == username);
+            if (admin != null && VerifyPassword(password, admin.AdminPassword))
+            {
+                return admin;
+            }
+            return null;
         }
 
         public void UpdateAdmin(Admin admin)
@@ -36,14 +41,23 @@ namespace BusinessLayer.Concrete
             return VerifyPassword(password, admin.AdminPassword);
         }
 
-        private string HashPassword(string password)
+        public string HashPassword(string password)
         {
             return BCrypt.Net.BCrypt.HashPassword(password);
         }
 
         private bool VerifyPassword(string password, string hashedPassword)
         {
-            return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+            try
+            {
+                return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+            }
+            catch
+            {
+                // Eğer hash verification başarısız olursa (eski plain text şifreler için)
+                // Plain text karşılaştırması yapalım
+                return password == hashedPassword;
+            }
         }
     }
 }

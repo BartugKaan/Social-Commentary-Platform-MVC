@@ -3,10 +3,12 @@ using BusinessLayer.ValidationRules;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
+using MvcProjeKampi.Filters;
 using System.Web.Mvc;
 
 namespace MvcProjeKampi.Controllers
 {
+    [AdminAuthorization]
     public class AdminCategoryController : Controller
     {
         CategoryManager categoryManager = new CategoryManager(new EFCategoryDal());
