@@ -52,6 +52,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Abstract\IAboutDal.cs" />
+    <Compile Include="Abstract\IAdminDal.cs" />
     <Compile Include="Abstract\ICategoryDal.cs" />
     <Compile Include="Abstract\IContactDal.cs" />
     <Compile Include="Abstract\IContentDal.cs" />
@@ -63,6 +64,7 @@
     <Compile Include="Concrete\Context.cs" />
     <Compile Include="Concrete\Repositories\GenericRepository.cs" />
     <Compile Include="EntityFramework\EFAboutDal.cs" />
+    <Compile Include="EntityFramework\EFAdminDal.cs" />
     <Compile Include="EntityFramework\EFCategoryDal.cs" />
     <Compile Include="EntityFramework\EFContactDal.cs" />
     <Compile Include="EntityFramework\EFContentDal.cs" />
@@ -110,6 +112,14 @@
     <Compile Include="Migrations\202508250920271_mig_imagefiles_added.Designer.cs">
       <DependentUpon>202508250920271_mig_imagefiles_added.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202508250959566_mig_admin_entity_added.cs" />
+    <Compile Include="Migrations\202508250959566_mig_admin_entity_added.Designer.cs">
+      <DependentUpon>202508250959566_mig_admin_entity_added.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\202508251211097_mig_fix_admin_passord_length.cs" />
+    <Compile Include="Migrations\202508251211097_mig_fix_admin_passord_length.Designer.cs">
+      <DependentUpon>202508251211097_mig_fix_admin_passord_length.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -153,6 +163,12 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202508250920271_mig_imagefiles_added.resx">
       <DependentUpon>202508250920271_mig_imagefiles_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202508250959566_mig_admin_entity_added.resx">
+      <DependentUpon>202508250959566_mig_admin_entity_added.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202508251211097_mig_fix_admin_passord_length.resx">
+      <DependentUpon>202508251211097_mig_fix_admin_passord_length.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
