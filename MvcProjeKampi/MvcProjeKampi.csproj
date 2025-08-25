@@ -138,6 +138,7 @@
     <Compile Include="Controllers\AdminWriterController.cs" />
     <Compile Include="Controllers\CategoryController.cs" />
     <Compile Include="Controllers\ErrorPageController.cs" />
+    <Compile Include="Controllers\GallleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -2313,6 +2314,7 @@
     <Content Include="Views\AdminMessage\NewMessage.cshtml" />
     <Content Include="Views\AdminMessage\GetInboxMessageDetails.cshtml" />
     <Content Include="Views\ErrorPage\Page404.cshtml" />
+    <Content Include="Views\Galllery\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
