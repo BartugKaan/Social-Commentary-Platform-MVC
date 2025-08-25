@@ -1,6 +1,8 @@
 ﻿using BusinessLayer.Concrete;
+using BusinessLayer.ValidationRules;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
+using FluentValidation.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,17 +32,32 @@ namespace MvcProjeKampi.Controllers
             return View();
         }
 
+        [HttpPost]
+        public ActionResult NewMessage(Message message)
+        {
+            MessageValidator messageValidator = new MessageValidator();
+            ValidationResult result = messageValidator.Validate(message);
+
+            if (result.IsValid)
+            {
+                message.MessageDate = DateTime.Parse(DateTime.Now.ToShortDateString());
+                manager.AddMessage(message);
+                return RedirectToAction("Sendbox");
+            }
+            else
+            {
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+            }
+            return View();
+        }
+
         public ActionResult GetInboxMessageDetails(int id)
         {
             var values = manager.GetById(id);
             return View(values);
-        }
-
-        [HttpPost]
-        public ActionResult NewMessage(Message message)
-        {
-
-            return View();
         }
     }
 }

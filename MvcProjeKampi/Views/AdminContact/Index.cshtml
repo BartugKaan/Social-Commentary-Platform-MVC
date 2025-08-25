@@ -78,6 +78,7 @@
                                         <td class="mailbox-subject">
                                             <b>@item.Subject</b> - @item.Messsage
                                         </td>
+                                        <td class="mailbox-date">@(((DateTime)item.ContactDate).ToString("dd-MMM-yyyy"))</td>
                                     </tr>
                                 }
                             </tbody>
