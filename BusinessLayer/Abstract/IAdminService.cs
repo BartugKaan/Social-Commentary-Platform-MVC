@@ -12,6 +12,5 @@ namespace BusinessLayer.Abstract
         Admin GetAdmin(string username, string password);
         bool ValidateAdmin(string username, string password);
         void UpdateAdmin(Admin admin);
-        string HashPassword(string password);
     }
 }

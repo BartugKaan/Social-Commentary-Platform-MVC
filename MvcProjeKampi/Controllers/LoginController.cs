@@ -27,46 +27,33 @@ namespace MvcProjeKampi.Controllers
         [HttpPost]
         public ActionResult Index(Admin admin)
         {
-            try
+            AdminValidator validationRules = new AdminValidator();
+            ValidationResult result = validationRules.Validate(admin);
+            if (ModelState.IsValid && result.IsValid)
             {
-                AdminValidator validationRules = new AdminValidator();
-                ValidationResult result = validationRules.Validate(admin);
-                
-                if (ModelState.IsValid && result.IsValid)
+                if (_adminManager.ValidateAdmin(admin.AdminUserName, admin.AdminPassword))
                 {
-                    if (_adminManager.ValidateAdmin(admin.AdminUserName, admin.AdminPassword))
-                    {
-                        var adminUser = _adminManager.GetAdmin(admin.AdminUserName, admin.AdminPassword);
-                        if (adminUser != null)
-                        {
-                            Session["AdminId"] = adminUser.AdminId;
-                            Session["AdminUserName"] = adminUser.AdminUserName;
+                    var adminUser = _adminManager.GetAdmin(admin.AdminUserName, admin.AdminPassword);
+                    Session["AdminId"] = adminUser.AdminId;
+                    Session["AdminUserName"] = adminUser.AdminUserName;
 
-                            FormsAuthentication.SetAuthCookie(admin.AdminUserName, false);
 
-                            return RedirectToAction("Index", "AdminCategory");
-                        }
-                        else
-                        {
-                            ViewBag.ErrorMessage = "Kullanıcı bilgileri alınamadı";
-                        }
-                    }
-                    else
-                    {
-                        ViewBag.ErrorMessage = "Kullanıcı adı veya şifre yanlış";
-                    }
+                    FormsAuthentication.SetAuthCookie(admin.AdminUserName, false);
+
+                    return RedirectToAction("Index", "AdminCategory");
                 }
                 else
                 {
-                    foreach (var item in result.Errors)
-                    {
-                        ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                    }
+                    ViewBag.ErrorMessage = "Kullanıcı adı veya şifre yanlış";
                 }
             }
-            catch (System.Exception ex)
+            else
             {
-                ViewBag.ErrorMessage = "Giriş sırasında bir hata oluştu: " + ex.Message;
+                foreach (var item in result.Errors)
+                {
+                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                }
+                return View();
             }
             return View();
         }

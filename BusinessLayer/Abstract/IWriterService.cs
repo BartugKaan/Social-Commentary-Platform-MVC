@@ -10,5 +10,10 @@ namespace BusinessLayer.Abstract
         void WriterDelete(Writer writer);
         void WriterUpdate(Writer writer);
         Writer GetById(int id);
+        
+        // Authentication metodları
+        bool ValidateWriter(string email, string password);
+        Writer GetWriter(string email, string password);
+        Writer GetWriterByEmail(string email);
     }
 }

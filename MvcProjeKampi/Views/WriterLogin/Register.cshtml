@@ -1,0 +1,100 @@
+@using EntityLayer.Concrete
+@model Writer
+@{
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Yazar Kayýt</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/AdminLTE-3.0.4/login-form-19/css/style.css">
+
+</head>
+<body>
+    <section class="ftco-section">
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-8 text-center mb-5">
+                    <h2 class="heading-section">MVC Proje Kampý - Yazar Kayýt</h2>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-6">
+                    <div class="login-wrap py-5">
+                        <div class="img d-flex align-items-center justify-content-center" style="background-image: url(/AdminLTE-3.0.4/login-form-19/images/bg.jpg);"></div>
+                        <h3 class="text-center mb-0">Yazar Olun</h3>
+                        <p class="text-center">Yazarlýk hesabýnýzý oluþturun ve yazmaya baþlayýn.</p>
+                        
+                        @if (ViewBag.ErrorMessage != null)
+                        {
+                            <div class="alert alert-danger text-center mb-3">@ViewBag.ErrorMessage</div>
+                        }
+                        
+                        @using (Html.BeginForm("Register", "WriterLogin", FormMethod.Post))
+                        {
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-user"></span></div>
+                                        <input type="text" class="form-control" name="WriterName" placeholder="Adýnýz" required>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-user"></span></div>
+                                        <input type="text" class="form-control" name="WriterSurname" placeholder="Soyadýnýz" required>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-envelope"></span></div>
+                                <input type="email" class="form-control" name="WriterMail" placeholder="E-posta Adresiniz" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-lock"></span></div>
+                                <input type="password" class="form-control" name="WriterPassword" placeholder="Þifreniz (min 6 karakter)" required>
+                                <small class="text-muted">Þifreniz en az 6 karakter olmalýdýr.</small>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-tag"></span></div>
+                                <input type="text" class="form-control" name="WriterTitle" placeholder="Ünvanýnýz (opsiyonel)">
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-info-circle"></span></div>
+                                <textarea class="form-control" name="WriterAbout" placeholder="Kendiniz hakkýnda kýsa bilgi (opsiyonel)" rows="3"></textarea>
+                            </div>
+                            
+                            <div class="form-group">
+                                <button type="submit" class="btn form-control btn-success rounded submit px-3">Kayýt Ol</button>
+                            </div>
+                            
+                            <div class="form-group text-center">
+                                <p class="w-100">
+                                    <a href="@Url.Action("Index", "WriterLogin")" style="color: #007bff; text-decoration: none;">Zaten hesabýnýz var mý? Giriþ yapýn</a>
+                                </p>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script src="~/AdminLTE-3.0.4/login-form-19/js/jquery.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/login-form-19/js/popper.js"></script>
+    <script src="~/AdminLTE-3.0.4/login-form-19/js/bootstrap.min.js"></script>
+    <script src="~/AdminLTE-3.0.4/login-form-19/js/main.js"></script>
+
+</body>
+</html>

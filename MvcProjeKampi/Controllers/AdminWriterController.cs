@@ -35,6 +35,7 @@ namespace MvcProjeKampi.Controllers
             ValidationResult results = validationRules.Validate(writer);
             if (results.IsValid)
             {
+                // WriterManager.WriterAdd metodu şifreyi otomatik olarak hash'ler
                 writerManager.WriterAdd(writer);
                 return RedirectToAction("Index");
             }
@@ -47,6 +48,7 @@ namespace MvcProjeKampi.Controllers
             }
             return View();
         }
+        
         [HttpGet]
         public ActionResult EditWriter(int id)
         {
@@ -61,6 +63,7 @@ namespace MvcProjeKampi.Controllers
             ValidationResult results = validationRules.Validate(writer);
             if (results.IsValid)
             {
+                // WriterManager.WriterUpdate metodu şifre değiştirilmişse hash'ler
                 writerManager.WriterUpdate(writer);
                 return RedirectToAction("Index");
             }
@@ -72,6 +75,25 @@ namespace MvcProjeKampi.Controllers
                 }
             }
             return View();
+        }
+
+        // Mevcut yazarların şifrelerini hash'lemek için yardımcı metot
+        public ActionResult HashExistingPasswords()
+        {
+            var writers = writerManager.GetAll();
+            foreach (var writer in writers)
+            {
+                // Eğer şifre hash'lenmemişse (BCrypt hash'i "$2a$" ile başlar)
+                if (!string.IsNullOrEmpty(writer.WriterPassword) && !writer.WriterPassword.StartsWith("$2a$"))
+                {
+                    var originalPassword = writer.WriterPassword;
+                    writer.WriterPassword = originalPassword; // WriterUpdate içinde hash'lenecek
+                    writerManager.WriterUpdate(writer);
+                }
+            }
+            
+            ViewBag.Message = "Tüm yazarların şifreleri güvenli hale getirildi!";
+            return RedirectToAction("Index");
         }
     }
 }

@@ -141,7 +141,10 @@
     <Compile Include="Controllers\GallleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\WriterLoginController.cs" />
+    <Compile Include="Controllers\WriterPanelController.cs" />
     <Compile Include="Filters\AdminAuthorizationAttribute.cs" />
+    <Compile Include="Filters\WriterAuthorizationAttribute.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -2432,6 +2435,10 @@
     <Content Include="Views\Galllery\Index.cshtml" />
     <Content Include="Views\Login\Index.cshtml" />
     <Content Include="Views\Shared\_WriterLayout.cshtml" />
+    <Content Include="Views\WriterPanel\WriterProfile.cshtml" />
+    <Content Include="Views\WriterPanel\WriterHeading.cshtml" />
+    <Content Include="Views\WriterLogin\Index.cshtml" />
+    <Content Include="Views\WriterLogin\Register.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

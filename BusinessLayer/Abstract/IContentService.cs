@@ -7,8 +7,9 @@ namespace BusinessLayer.Abstract
     {
         List<Content> GetAll();
         List<Content> GetListById(int id);
+        List<Content> GetAllByWriter(int writerId);
         void AddContent(Content content);
-        Heading GetById(int id);
+        Content GetById(int id);
         void DeleteContent(Content content);
         void UpdateContent(Content content);
     }

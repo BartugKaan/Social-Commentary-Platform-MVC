@@ -30,7 +30,17 @@ namespace BusinessLayer.Concrete
 
         public void WriterAdd(Writer writer)
         {
-            _writerDal.Insert(writer);
+            try
+            {
+                // Şifreyi hashle
+                writer.WriterPassword = HashPassword(writer.WriterPassword);
+                writer.WriterStatus = true; // Yeni yazarları aktif yap
+                _writerDal.Insert(writer);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Yazar eklenirken hata oluştu: " + ex.Message);
+            }
         }
 
         public void WriterDelete(Writer writer)
@@ -40,7 +50,99 @@ namespace BusinessLayer.Concrete
 
         public void WriterUpdate(Writer writer)
         {
+            // Eğer şifre değiştirilmişse hash'le
+            if (!string.IsNullOrEmpty(writer.WriterPassword) && !writer.WriterPassword.StartsWith("$2a$"))
+            {
+                writer.WriterPassword = HashPassword(writer.WriterPassword);
+            }
             _writerDal.Update(writer);
+        }
+
+        public Writer GetWriter(string email, string password)
+        {
+            try
+            {
+                var writer = _writerDal.Get(x => x.WriterMail == email && x.WriterStatus == true);
+                if (writer != null && VerifyPassword(password, writer.WriterPassword))
+                {
+                    return writer;
+                }
+                return null;
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public bool ValidateWriter(string email, string password)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+                    return false;
+
+                var writer = _writerDal.Get(x => x.WriterMail == email && x.WriterStatus == true);
+                if (writer == null) 
+                    return false;
+
+                // Şifre kontrolü
+                return VerifyPassword(password, writer.WriterPassword);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public Writer GetWriterByEmail(string email)
+        {
+            try
+            {
+                if (string.IsNullOrEmpty(email))
+                    return null;
+                    
+                return _writerDal.Get(x => x.WriterMail == email && x.WriterStatus == true);
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        private string HashPassword(string password)
+        {
+            try
+            {
+                return BCrypt.Net.BCrypt.HashPassword(password);
+            }
+            catch (Exception)
+            {
+                // BCrypt hatası durumunda basit hash kullan (geliştirme için)
+                return password; // Geçici - güvenlik için üretimde kaldırılmalı
+            }
+        }
+
+        private bool VerifyPassword(string password, string hashedPassword)
+        {
+            try
+            {
+                // Hash'lenmiş şifre kontrolü
+                if (hashedPassword.StartsWith("$2a$"))
+                {
+                    return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
+                }
+                else
+                {
+                    // Hash'lenmemiş şifre (eski kayıtlar için)
+                    return password == hashedPassword;
+                }
+            }
+            catch (Exception)
+            {
+                // Hata durumunda basit karşılaştırma
+                return password == hashedPassword;
+            }
         }
     }
 }
