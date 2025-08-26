@@ -1,0 +1,164 @@
+@using EntityLayer.Concrete
+@model List<Content>
+@{
+    ViewBag.Title = ViewBag.HeadingName + " - Ýçerikler";
+    Layout = "~/Views/Shared/_VitrinLayout.cshtml";
+}
+
+<div class="row mt-4">
+    <!-- Main Content Area -->
+    <div class="col-lg-8">
+        <!-- Heading Info -->
+        <div class="card bg-primary text-white mb-4">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h2 class="card-title mb-1">@ViewBag.HeadingName</h2>
+                        <p class="card-text mb-0">
+                            <i class="fas fa-file-alt mr-2"></i>
+                            @Model.Count Ýçerik Bulundu
+                        </p>
+                    </div>
+                    <div class="col-auto">
+                        <i class="fas fa-newspaper fa-3x opacity-25"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content List -->
+        @if (Model != null && Model.Any())
+        {
+            foreach (var content in Model.OrderByDescending(c => c.ContentDate))
+            {
+                <div class="card article-card mb-4">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start mb-3">
+                            <span class="badge badge-success">
+                                <i class="fas fa-tag mr-1"></i>@content.Heading.Category.CategoryName
+                            </span>
+                            <small class="text-muted">
+                                <i class="fas fa-clock mr-1"></i>
+                                @content.ContentDate.ToString("dd MMMM yyyy HH:mm")
+                            </small>
+                        </div>
+                        
+                        <div class="content-text mb-3">
+                            @Html.Raw(content.ContentValue.Length > 500 
+                                ? content.ContentValue.Substring(0, 500) + "..." 
+                                : content.ContentValue)
+                        </div>
+                        
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="author-info">
+                                <i class="fas fa-user-pen text-primary mr-1"></i>
+                                <small class="text-muted">
+                                    <strong>@content.Writer.WriterName @content.Writer.WriterSurname</strong>
+                                </small>
+                            </div>
+                            
+                            @if (content.ContentValue.Length > 500)
+                            {
+                                <a href="@Url.Action("ArticleDetail", "Vitrin", new { id = content.ContentId })" 
+                                   class="btn btn-outline-primary btn-sm">
+                                    <i class="fas fa-expand-alt mr-1"></i>Tamamýný Oku
+                                </a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="card">
+                <div class="card-body text-center py-5">
+                    <i class="fas fa-file-alt fa-4x text-muted mb-3"></i>
+                    <h4 class="text-muted">Ýçerik Bulunamadý</h4>
+                    <p class="text-muted">Bu baþlýk için henüz içerik eklenmemiþ.</p>
+                    <a href="@Url.Action("Index", "Vitrin")" class="btn btn-primary">
+                        <i class="fas fa-arrow-left mr-1"></i>Ana Sayfaya Dön
+                    </a>
+                </div>
+            </div>
+        }
+        
+        <!-- Back to Main Page -->
+        <div class="text-center mt-4">
+            <a href="@Url.Action("Index", "Vitrin")" class="btn btn-secondary">
+                <i class="fas fa-arrow-left mr-2"></i>Tüm Ýçeriklere Dön
+            </a>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Recent Headings -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-list mr-2"></i>Diðer Baþlýklar
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                @if (ViewBag.RecentHeadings != null && ((List<Heading>)ViewBag.RecentHeadings).Any())
+                {
+                    <div class="list-group list-group-flush">
+                        @foreach (Heading heading in (List<Heading>)ViewBag.RecentHeadings)
+                        {
+                            <a href="@Url.Action("HeadingContents", "Vitrin", new { id = heading.HeadingId })" 
+                               class="list-group-item list-group-item-action sidebar-heading border-0 
+                                      @(heading.HeadingName == ViewBag.HeadingName ? "active" : "")">
+                                <div class="d-flex w-100 justify-content-between">
+                                    <h6 class="mb-1 text-truncate">@heading.HeadingName</h6>
+                                    <small>@heading.HeadingDate.ToString("dd MMM")</small>
+                                </div>
+                                <div class="d-flex w-100 justify-content-between">
+                                    <small>@heading.Category.CategoryName</small>
+                                    <small>@heading.Writer.WriterName @heading.Writer.WriterSurname</small>
+                                </div>
+                            </a>
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <i class="fas fa-list fa-2x text-muted mb-2"></i>
+                        <p class="text-muted mb-0">Baþka baþlýk bulunamadý</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Writer Login Card -->
+        <div class="mt-4">
+            @Html.Partial("_WriterLoginCard")
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+$(document).ready(function() {
+    // Highlight current heading in sidebar
+    $('.sidebar-heading').each(function() {
+        var headingName = $(this).find('h6').text().trim();
+        var currentHeading = '@ViewBag.HeadingName';
+        if (headingName === currentHeading) {
+            $(this).addClass('bg-light border-left-primary');
+        }
+    });
+    
+    // Article card animations
+    $('.article-card').each(function(index) {
+        $(this).css({
+            'opacity': '0',
+            'transform': 'translateY(20px)'
+        }).delay(index * 100).animate({
+            'opacity': '1'
+        }, 500).css('transform', 'translateY(0px)');
+    });
+});
+</script>
+}

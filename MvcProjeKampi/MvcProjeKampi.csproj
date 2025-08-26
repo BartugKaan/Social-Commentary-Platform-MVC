@@ -141,6 +141,7 @@
     <Compile Include="Controllers\GallleryController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\LoginController.cs" />
+    <Compile Include="Controllers\VitrinController.cs" />
     <Compile Include="Controllers\WriterLoginController.cs" />
     <Compile Include="Controllers\WriterPanelController.cs" />
     <Compile Include="Filters\AdminAuthorizationAttribute.cs" />
@@ -2451,6 +2452,11 @@
     <Content Include="Views\WriterPanel\GetMessageDetails.cshtml" />
     <Content Include="Views\WriterPanel\AddContent.cshtml" />
     <Content Include="Views\WriterPanel\EditContent.cshtml" />
+    <Content Include="Views\Shared\_VitrinLayout.cshtml" />
+    <Content Include="Views\Vitrin\Index.cshtml" />
+    <Content Include="Views\Vitrin\HeadingContents.cshtml" />
+    <Content Include="Views\Vitrin\ArticleDetail.cshtml" />
+    <Content Include="Views\Shared\_WriterLoginCard.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

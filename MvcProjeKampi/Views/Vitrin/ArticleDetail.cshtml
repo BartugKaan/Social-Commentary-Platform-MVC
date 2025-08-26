@@ -1,0 +1,295 @@
+@using EntityLayer.Concrete
+@model Content
+@{
+    ViewBag.Title = Model.Heading.HeadingName + " - Makale Detay";
+    Layout = "~/Views/Shared/_VitrinLayout.cshtml";
+}
+
+<div class="row mt-4">
+    <!-- Main Content Area -->
+    <div class="col-lg-8">
+        <!-- Article Card -->
+        <article class="card article-card shadow">
+            <!-- Article Header -->
+            <div class="card-header bg-gradient-primary text-white">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <h1 class="card-title mb-2 h3">@Model.Heading.HeadingName</h1>
+                        <div class="article-meta">
+                            <span class="badge badge-light mr-2">
+                                <i class="fas fa-tag mr-1"></i>@Model.Heading.Category.CategoryName
+                            </span>
+                            <span class="text-light">
+                                <i class="fas fa-clock mr-1"></i>
+                                @Model.ContentDate.ToString("dd MMMM yyyy HH:mm")
+                            </span>
+                        </div>
+                    </div>
+                    <div class="col-auto d-none d-md-block">
+                        <i class="fas fa-newspaper fa-3x" style="opacity: 0.3;"></i>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Article Body -->
+            <div class="card-body">
+                <!-- Author Info -->
+                <div class="author-section mb-4 p-3 bg-light rounded">
+                    <div class="row align-items-center">
+                        <div class="col-auto">
+                            <div class="avatar-circle bg-primary text-white d-flex align-items-center justify-content-center"
+                                 style="width: 60px; height: 60px; border-radius: 50%; font-size: 24px;">
+                                @Model.Writer.WriterName.Substring(0, 1).ToUpper()@Model.Writer.WriterSurname.Substring(0, 1).ToUpper()
+                            </div>
+                        </div>
+                        <div class="col">
+                            <h5 class="mb-1">@Model.Writer.WriterName @Model.Writer.WriterSurname</h5>
+                            <p class="text-muted mb-0">
+                                <i class="fas fa-user-pen mr-1"></i>Yazar
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Article Content -->
+                <div class="article-content">
+                    @Html.Raw(Model.ContentValue)
+                </div>
+            </div>
+            
+            <!-- Article Footer -->
+            <div class="card-footer bg-light">
+                <div class="row align-items-center">
+                    <div class="col">
+                        <small class="text-muted">
+                            <i class="fas fa-calendar mr-1"></i>
+                            Yayýnlanma: @Model.ContentDate.ToString("dd MMMM yyyy, dddd")
+                        </small>
+                    </div>
+                    <div class="col-auto">
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-primary btn-sm" onclick="window.print()">
+                                <i class="fas fa-print mr-1"></i>Yazdýr
+                            </button>
+                            <button type="button" class="btn btn-outline-success btn-sm" onclick="shareArticle()">
+                                <i class="fas fa-share mr-1"></i>Paylaþ
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </article>
+        
+        <!-- Navigation -->
+        <div class="row mt-4">
+            <div class="col-6">
+                <a href="@Url.Action("HeadingContents", "Vitrin", new { id = Model.HeadingId })" 
+                   class="btn btn-outline-secondary btn-block">
+                    <i class="fas fa-arrow-left mr-2"></i>Baþlýða Dön
+                </a>
+            </div>
+            <div class="col-6">
+                <a href="@Url.Action("Index", "Vitrin")" class="btn btn-outline-primary btn-block">
+                    <i class="fas fa-home mr-2"></i>Ana Sayfa
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="col-lg-4">
+        <!-- Article Stats -->
+        <div class="card bg-info text-white shadow-sm mb-4">
+            <div class="card-body text-center">
+                <h5 class="card-title">
+                    <i class="fas fa-chart-bar mr-2"></i>Makale Bilgileri
+                </h5>
+                <div class="row">
+                    <div class="col-6">
+                        <div class="info-box-content">
+                            <span class="info-box-number">@Model.ContentValue.Split(' ').Length</span>
+                            <span class="info-box-text">Kelime</span>
+                        </div>
+                    </div>
+                    <div class="col-6">
+                        <div class="info-box-content">
+                            <span class="info-box-number">@Model.ContentValue.Length</span>
+                            <span class="info-box-text">Karakter</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Related Articles -->
+        <div class="card shadow-sm">
+            <div class="card-header bg-primary text-white">
+                <h5 class="card-title mb-0">
+                    <i class="fas fa-list mr-2"></i>Diðer Baþlýklar
+                </h5>
+            </div>
+            <div class="card-body p-0">
+                @if (ViewBag.RecentHeadings != null && ((List<Heading>)ViewBag.RecentHeadings).Any())
+                {
+                    <div class="list-group list-group-flush">
+                        @foreach (Heading heading in (List<Heading>)ViewBag.RecentHeadings)
+                        {
+                            if (heading.HeadingId != Model.HeadingId)
+                            {
+                                <a href="@Url.Action("HeadingContents", "Vitrin", new { id = heading.HeadingId })" 
+                                   class="list-group-item list-group-item-action sidebar-heading border-0">
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <h6 class="mb-1 text-truncate">@heading.HeadingName</h6>
+                                        <small class="text-muted">@heading.HeadingDate.ToString("dd MMM")</small>
+                                    </div>
+                                    <div class="d-flex w-100 justify-content-between">
+                                        <small class="text-muted">@heading.Category.CategoryName</small>
+                                        <small class="text-primary">@heading.Writer.WriterName @heading.Writer.WriterSurname</small>
+                                    </div>
+                                </a>
+                            }
+                        }
+                    </div>
+                }
+                else
+                {
+                    <div class="text-center py-4">
+                        <i class="fas fa-list fa-2x text-muted mb-2"></i>
+                        <p class="text-muted mb-0">Baþka baþlýk bulunamadý</p>
+                    </div>
+                }
+            </div>
+        </div>
+
+        <!-- Writer Login Card -->
+        <div class="mt-4">
+            @Html.Partial("_WriterLoginCard")
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+<script>
+function shareArticle() {
+    if (navigator.share) {
+        navigator.share({
+            title: '@Model.Heading.HeadingName',
+            text: '@Model.Heading.HeadingName - MVC Sözlük makalesi',
+            url: window.location.href
+        }).catch(console.error);
+    } else {
+        // Fallback - copy to clipboard
+        navigator.clipboard.writeText(window.location.href).then(function() {
+            alert('Makale baðlantýsý panoya kopyalandý!');
+        });
+    }
+}
+
+$(document).ready(function() {
+    // Article content animations
+    $('.article-content').css({
+        'opacity': '0',
+        'transform': 'translateY(30px)'
+    }).animate({
+        'opacity': '1'
+    }, 800).css('transform', 'translateY(0px)');
+    
+    // Reading progress indicator
+    var winHeight = $(window).height();
+    var docHeight = $(document).height();
+    var progressBar = $('<div class="reading-progress"></div>');
+    
+    $('body').append(progressBar);
+    
+    progressBar.css({
+        'position': 'fixed',
+        'top': '0',
+        'left': '0',
+        'width': '0%',
+        'height': '3px',
+        'background': 'linear-gradient(to right, #007bff, #28a745)',
+        'z-index': '1000',
+        'transition': 'width 0.3s ease'
+    });
+    
+    $(window).scroll(function() {
+        var scrollTop = $(window).scrollTop();
+        var percent = (scrollTop / (docHeight - winHeight)) * 100;
+        progressBar.css('width', percent + '%');
+    });
+    
+    // Smooth scroll for internal links
+    $('.article-content a[href^="#"]').click(function(e) {
+        e.preventDefault();
+        var target = $(this.hash);
+        if (target.length) {
+            $('html, body').animate({
+                scrollTop: target.offset().top - 100
+            }, 500);
+        }
+    });
+});
+</script>
+
+<style>
+.avatar-circle {
+    font-weight: bold;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+}
+
+.article-content {
+    line-height: 1.8;
+    font-size: 16px;
+}
+
+.article-content p {
+    margin-bottom: 1.2rem;
+    text-align: justify;
+}
+
+.article-content h1,
+.article-content h2,
+.article-content h3,
+.article-content h4,
+.article-content h5,
+.article-content h6 {
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    color: #343a40;
+}
+
+.article-content blockquote {
+    border-left: 4px solid #007bff;
+    padding-left: 1rem;
+    margin: 1.5rem 0;
+    font-style: italic;
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 0 4px 4px 0;
+}
+
+.article-content code {
+    background: #f8f9fa;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.9em;
+}
+
+.article-content pre {
+    background: #f8f9fa;
+    padding: 1rem;
+    border-radius: 4px;
+    overflow-x: auto;
+    border-left: 4px solid #6c757d;
+}
+
+@@media print {
+    .sidebar, .writer-login-btn, .card-footer, .navigation {
+        display: none !important;
+    }
+    .col-lg-8 {
+        width: 100% !important;
+    }
+}
+</style>
+}
