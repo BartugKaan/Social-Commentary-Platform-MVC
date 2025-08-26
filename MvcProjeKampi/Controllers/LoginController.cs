@@ -3,6 +3,7 @@ using BusinessLayer.ValidationRules;
 using DataAccessLayer.EntityFramework;
 using EntityLayer.Concrete;
 using FluentValidation.Results;
+using System;
 using System.Web.Mvc;
 using System.Web.Security;
 
@@ -17,7 +18,6 @@ namespace MvcProjeKampi.Controllers
             _adminManager = new AdminManager(new EFAdminDal());
         }
 
-
         [HttpGet]
         public ActionResult Index()
         {
@@ -27,43 +27,73 @@ namespace MvcProjeKampi.Controllers
         [HttpPost]
         public ActionResult Index(Admin admin)
         {
-            AdminValidator validationRules = new AdminValidator();
-            ValidationResult result = validationRules.Validate(admin);
-            if (ModelState.IsValid && result.IsValid)
+            try
             {
+                if (!ModelState.IsValid)
+                {
+                    ViewBag.ErrorMessage = "Lütfen tüm gerekli alanları doğru şekilde doldurunuz.";
+                    return View();
+                }
+
+                AdminValidator validationRules = new AdminValidator();
+                ValidationResult result = validationRules.Validate(admin);
+                
+                if (!result.IsValid)
+                {
+                    foreach (var item in result.Errors)
+                    {
+                        ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
+                    }
+                    return View();
+                }
+
                 if (_adminManager.ValidateAdmin(admin.AdminUserName, admin.AdminPassword))
                 {
+
                     var adminUser = _adminManager.GetAdmin(admin.AdminUserName, admin.AdminPassword);
-                    Session["AdminId"] = adminUser.AdminId;
-                    Session["AdminUserName"] = adminUser.AdminUserName;
-
-
-                    FormsAuthentication.SetAuthCookie(admin.AdminUserName, false);
-
-                    return RedirectToAction("Index", "AdminCategory");
+                    
+                    if (adminUser != null)
+                    {
+                        Session["AdminId"] = adminUser.AdminId;
+                        Session["AdminUserName"] = adminUser.AdminUserName;
+                        
+                        FormsAuthentication.SetAuthCookie(admin.AdminUserName, false);
+                        
+                        return RedirectToAction("Index", "AdminCategory");
+                    }
+                    else
+                    {
+                        ViewBag.ErrorMessage = "Admin kullanıcı bilgileri alınamadı. Lütfen sistem yöneticisi ile iletişime geçiniz.";
+                    }
                 }
                 else
                 {
-                    ViewBag.ErrorMessage = "Kullanıcı adı veya şifre yanlış";
+                    ViewBag.ErrorMessage = "Kullanıcı adı veya şifre hatalı.";
                 }
             }
-            else
+            catch (Exception ex)
             {
-                foreach (var item in result.Errors)
-                {
-                    ModelState.AddModelError(item.PropertyName, item.ErrorMessage);
-                }
-                return View();
+                ViewBag.ErrorMessage = "Giriş sırasında bir hata oluştu. Lütfen tekrar deneyiniz.";
+                
             }
+            
             return View();
         }
 
         public ActionResult LogOut()
         {
-            FormsAuthentication.SignOut();
-            Session.Clear();
-            Session.Abandon();
+            try
+            {
+                FormsAuthentication.SignOut();
+                Session.Clear();
+                Session.Abandon();
+            }
+            catch (Exception ex)
+            {
+            }
+            
             return RedirectToAction("Index", "Login");
         }
+
     }
 }
