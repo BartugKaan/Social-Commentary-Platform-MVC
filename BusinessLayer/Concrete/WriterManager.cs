@@ -32,9 +32,8 @@ namespace BusinessLayer.Concrete
         {
             try
             {
-                // Şifreyi hashle
                 writer.WriterPassword = HashPassword(writer.WriterPassword);
-                writer.WriterStatus = true; // Yeni yazarları aktif yap
+                writer.WriterStatus = true;
                 _writerDal.Insert(writer);
             }
             catch (Exception ex)
@@ -50,12 +49,23 @@ namespace BusinessLayer.Concrete
 
         public void WriterUpdate(Writer writer)
         {
-            // Eğer şifre değiştirilmişse hash'le
-            if (!string.IsNullOrEmpty(writer.WriterPassword) && !writer.WriterPassword.StartsWith("$2a$"))
+            var existingWriter = _writerDal.Get(x => x.WriterId == writer.WriterId);
+            if (existingWriter == null)
+                throw new Exception("Writer not found");
+
+            existingWriter.WriterName = writer.WriterName;
+            existingWriter.WriterSurname = writer.WriterSurname;
+            existingWriter.WriterTitle = writer.WriterTitle;
+            existingWriter.WriterAbout = writer.WriterAbout;
+            existingWriter.WriterImage = writer.WriterImage;
+
+            // Only update password if a new one is provided
+            if (!string.IsNullOrEmpty(writer.WriterPassword))
             {
-                writer.WriterPassword = HashPassword(writer.WriterPassword);
+                existingWriter.WriterPassword = HashPassword(writer.WriterPassword);
             }
-            _writerDal.Update(writer);
+
+            _writerDal.Update(existingWriter);
         }
 
         public Writer GetWriter(string email, string password)
@@ -86,7 +96,6 @@ namespace BusinessLayer.Concrete
                 if (writer == null) 
                     return false;
 
-                // Şifre kontrolü
                 return VerifyPassword(password, writer.WriterPassword);
             }
             catch (Exception)
@@ -118,8 +127,7 @@ namespace BusinessLayer.Concrete
             }
             catch (Exception)
             {
-                // BCrypt hatası durumunda basit hash kullan (geliştirme için)
-                return password; // Geçici - güvenlik için üretimde kaldırılmalı
+                return password;
             }
         }
 
@@ -127,20 +135,17 @@ namespace BusinessLayer.Concrete
         {
             try
             {
-                // Hash'lenmiş şifre kontrolü
                 if (hashedPassword.StartsWith("$2a$"))
                 {
                     return BCrypt.Net.BCrypt.Verify(password, hashedPassword);
                 }
                 else
                 {
-                    // Hash'lenmemiş şifre (eski kayıtlar için)
                     return password == hashedPassword;
                 }
             }
             catch (Exception)
             {
-                // Hata durumunda basit karşılaştırma
                 return password == hashedPassword;
             }
         }

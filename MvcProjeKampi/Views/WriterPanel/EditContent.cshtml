@@ -1,0 +1,121 @@
+@using EntityLayer.Concrete
+@model Content
+@{
+    ViewBag.Title = "EditContent";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Ýçerik Düzenle</h1>
+                <p class="lead">Baþlýk: <strong>"@ViewBag.HeadingName"</strong></p>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/WriterPanel/WriterHeading">Baþlýklarým</a></li>
+                    <li class="breadcrumb-item"><a href="/WriterPanel/ContentByHeading/@Model.HeadingId">Ýçerikler</a></li>
+                    <li class="breadcrumb-item active">Düzenle</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Ýçerik Detaylarýný Düzenle</h3>
+                    </div>
+                    
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger mx-3 mt-3">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+                    
+                    @using (Html.BeginForm("EditContent", "WriterPanel", FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                        @Html.HiddenFor(model => model.ContentId)
+                        @Html.HiddenFor(model => model.HeadingId)
+                        
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="ContentValue" class="col-sm-2 col-form-label">Ýçerik <span class="text-danger">*</span></label>
+                                <div class="col-sm-10">
+                                    @Html.TextAreaFor(model => model.ContentValue, new { 
+                                        @class = "form-control", 
+                                        @rows = "15", 
+                                        placeholder = "Ýçeriðinizi buraya yazýnýz...", 
+                                        @required = "required", 
+                                        id = "content-editor" 
+                                    })
+                                    @Html.ValidationMessageFor(model => model.ContentValue, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <div class="col-sm-10 offset-sm-2">
+                                    <div class="form-check">
+                                        @Html.CheckBoxFor(model => model.ContentStatus, new { @class = "form-check-input" })
+                                        @Html.LabelFor(model => model.ContentStatus, "Aktif durumda tut", new { @class = "form-check-label" })
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">Oluþturma Tarihi</label>
+                                <div class="col-sm-10">
+                                    <p class="form-control-plaintext">
+                                        <i class="far fa-calendar-alt"></i> @Model.ContentDate.ToString("dd MMMM yyyy, HH:mm")
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-sm-10 offset-sm-2">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Deðiþiklikleri Kaydet
+                                    </button>
+                                    <a href="/WriterPanel/ContentByHeading/@Model.HeadingId" class="btn btn-secondary ml-2">
+                                        <i class="fas fa-times"></i> Ýptal
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Summernote için script -->
+<link rel="stylesheet" href="~/AdminLTE-3.0.4/plugins/summernote/summernote-bs4.css">
+<script src="~/AdminLTE-3.0.4/plugins/summernote/summernote-bs4.min.js"></script>
+<script src="~/AdminLTE-3.0.4/plugins/summernote/lang/summernote-tr-TR.js"></script>
+
+<script>
+    $(function () {
+        $('#content-editor').summernote({
+            height: 400,
+            lang: 'tr-TR',
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'italic', 'clear']],
+                ['color', ['color']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link', 'picture', 'video']],
+                ['view', ['fullscreen', 'codeview', 'help']]
+            ]
+        });
+    });
+</script>

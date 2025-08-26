@@ -11,5 +11,10 @@ namespace BusinessLayer.Abstract
         Message GetById(int id);
         void DeleteMessage(Message message);
         void UpdateMessage(Message message);
+        
+        // Writer-specific methods
+        List<Message> GetWriterInbox(string writerEmail);
+        List<Message> GetWriterSendbox(string writerEmail);
+        List<Writer> GetWritersForMessaging();
     }
 }

@@ -1,0 +1,150 @@
+@using EntityLayer.Concrete
+@model Message
+@{
+    ViewBag.Title = "NewMessage";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Yeni Mesaj Oluþtur</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/WriterPanel/Messages">Mesajlar</a></li>
+                    <li class="breadcrumb-item active">Yeni Mesaj</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-3">
+                <a href="/WriterPanel/Messages" class="btn btn-secondary btn-block mb-3">Geri Dön</a>
+                
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Klasörler</h3>
+                        <div class="card-tools">
+                            <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="card-body p-0">
+                        <ul class="nav nav-pills flex-column">
+                            <li class="nav-item">
+                                <a href="/WriterPanel/Inbox" class="nav-link">
+                                    <i class="fas fa-inbox"></i> Gelen Kutusu
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="/WriterPanel/Sendbox" class="nav-link">
+                                    <i class="far fa-envelope"></i> Gönderilenler
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-9">
+                @if (ViewBag.ErrorMessage != null)
+                {
+                    <div class="alert alert-danger alert-dismissible">
+                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+                        <i class="icon fas fa-ban"></i> @ViewBag.ErrorMessage
+                    </div>
+                }
+                
+                @using (Html.BeginForm("NewMessage", "WriterPanel", FormMethod.Post, new { @class = "form-horizontal" }))
+                {
+                    <div class="card card-primary card-outline">
+                        <div class="card-header">
+                            <h3 class="card-title">Mesaj Oluþtur</h3>
+                        </div>
+                        
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="ReceiverMail">Alýcý <span class="text-danger">*</span></label>
+                                @if (ViewBag.ReceiverMail != null && ((SelectList)ViewBag.ReceiverMail).Count() > 0)
+                                {
+                                    @Html.DropDownListFor(model => model.ReceiverMail, (SelectList)ViewBag.ReceiverMail, "-- Alýcý Seçiniz --", new { @class = "form-control", @required = "required" })
+                                }
+                                else
+                                {
+                                    <select class="form-control" disabled>
+                                        <option>Mesaj gönderebileceðiniz yazar bulunamadý</option>
+                                    </select>
+                                    <input type="hidden" name="ReceiverMail" value="" />
+                                }
+                                @Html.ValidationMessageFor(model => model.ReceiverMail, "", new { @class = "text-danger small" })
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="Subject">Konu <span class="text-danger">*</span></label>
+                                @Html.TextBoxFor(model => model.Subject, new { @class = "form-control", placeholder = "Mesaj konusunu giriniz", @required = "required" })
+                                @Html.ValidationMessageFor(model => model.Subject, "", new { @class = "text-danger small" })
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="MessageContent">Mesajýnýz <span class="text-danger">*</span></label>
+                                @Html.TextAreaFor(model => model.MessageContent, new { @class = "form-control", @rows = "10", placeholder = "Mesajýnýzý buraya yazýnýz...", @required = "required", id = "compose-textarea" })
+                                @Html.ValidationMessageFor(model => model.MessageContent, "", new { @class = "text-danger small" })
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <div class="float-right">
+                                <button type="button" class="btn btn-default">
+                                    <i class="fas fa-pencil-alt"></i> Taslak Olarak Kaydet
+                                </button>
+                                @if (ViewBag.ReceiverMail != null && ((SelectList)ViewBag.ReceiverMail).Count() > 0)
+                                {
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="far fa-envelope"></i> Gönder
+                                    </button>
+                                }
+                                else
+                                {
+                                    <button type="button" class="btn btn-primary" disabled>
+                                        <i class="far fa-envelope"></i> Gönderilecek Yazar Yok
+                                    </button>
+                                }
+                            </div>
+                            <button type="reset" class="btn btn-default">
+                                <i class="fas fa-times"></i> Ýptal
+                            </button>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Summernote için script -->
+<script src="~/AdminLTE-3.0.4/plugins/summernote/summernote-bs4.min.js"></script>
+<script src="~/AdminLTE-3.0.4/plugins/summernote/lang/summernote-tr-TR.js"></script>
+
+<script>
+    $(function () {
+        $('#compose-textarea').summernote({
+            height: 300,
+            lang: 'tr-TR',
+            toolbar: [
+                ['style', ['style']],
+                ['font', ['bold', 'underline', 'clear']],
+                ['para', ['ul', 'ol', 'paragraph']],
+                ['table', ['table']],
+                ['insert', ['link']],
+                ['view', ['fullscreen', 'help']]
+            ]
+        });
+    });
+</script></script>

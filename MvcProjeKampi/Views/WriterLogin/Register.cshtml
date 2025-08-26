@@ -7,7 +7,7 @@
 <!doctype html>
 <html lang="en">
 <head>
-    <title>Yazar Kayýt</title>
+    <title>Yazar Kayï¿½t</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -22,7 +22,7 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8 text-center mb-5">
-                    <h2 class="heading-section">MVC Proje Kampý - Yazar Kayýt</h2>
+                    <h2 class="heading-section">MVC Proje KampÄ± - Yazar Kayï¿½t</h2>
                 </div>
             </div>
             <div class="row justify-content-center">
@@ -30,7 +30,7 @@
                     <div class="login-wrap py-5">
                         <div class="img d-flex align-items-center justify-content-center" style="background-image: url(/AdminLTE-3.0.4/login-form-19/images/bg.jpg);"></div>
                         <h3 class="text-center mb-0">Yazar Olun</h3>
-                        <p class="text-center">Yazarlýk hesabýnýzý oluþturun ve yazmaya baþlayýn.</p>
+                        <p class="text-center">Yazarlï¿½k hesabï¿½nï¿½zï¿½ oluï¿½turun ve yazmaya baï¿½layï¿½n.</p>
                         
                         @if (ViewBag.ErrorMessage != null)
                         {
@@ -43,45 +43,51 @@
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-user"></span></div>
-                                        <input type="text" class="form-control" name="WriterName" placeholder="Adýnýz" required>
+                                        @Html.TextBoxFor(m => m.WriterName, new { @class = "form-control", @placeholder = "Adï¿½nï¿½z", @required = "required" })
+                                        @Html.ValidationMessageFor(m => m.WriterName, "", new { @class = "text-danger small" })
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
                                         <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-user"></span></div>
-                                        <input type="text" class="form-control" name="WriterSurname" placeholder="Soyadýnýz" required>
+                                        @Html.TextBoxFor(m => m.WriterSurname, new { @class = "form-control", @placeholder = "Soyadï¿½nï¿½z", @required = "required" })
+                                        @Html.ValidationMessageFor(m => m.WriterSurname, "", new { @class = "text-danger small" })
                                     </div>
                                 </div>
                             </div>
                             
                             <div class="form-group">
                                 <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-envelope"></span></div>
-                                <input type="email" class="form-control" name="WriterMail" placeholder="E-posta Adresiniz" required>
+                                @Html.TextBoxFor(m => m.WriterMail, new { @class = "form-control", @placeholder = "E-posta Adresiniz", @type = "email", @required = "required" })
+                                @Html.ValidationMessageFor(m => m.WriterMail, "", new { @class = "text-danger small" })
                             </div>
                             
                             <div class="form-group">
                                 <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-lock"></span></div>
-                                <input type="password" class="form-control" name="WriterPassword" placeholder="Þifreniz (min 6 karakter)" required>
-                                <small class="text-muted">Þifreniz en az 6 karakter olmalýdýr.</small>
+                                @Html.PasswordFor(m => m.WriterPassword, new { @class = "form-control", @placeholder = "ï¿½ifreniz (min 6 karakter)", @required = "required" })
+                                @Html.ValidationMessageFor(m => m.WriterPassword, "", new { @class = "text-danger small" })
+                                <small class="text-muted">ï¿½ifreniz en az 6 karakter olmalï¿½dï¿½r.</small>
                             </div>
                             
                             <div class="form-group">
                                 <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-tag"></span></div>
-                                <input type="text" class="form-control" name="WriterTitle" placeholder="Ünvanýnýz (opsiyonel)">
+                                @Html.TextBoxFor(m => m.WriterTitle, new { @class = "form-control", @placeholder = "ï¿½nvanï¿½nï¿½z (opsiyonel)" })
+                                @Html.ValidationMessageFor(m => m.WriterTitle, "", new { @class = "text-danger small" })
                             </div>
                             
                             <div class="form-group">
                                 <div class="icon d-flex align-items-center justify-content-center"><span class="fa fa-info-circle"></span></div>
-                                <textarea class="form-control" name="WriterAbout" placeholder="Kendiniz hakkýnda kýsa bilgi (opsiyonel)" rows="3"></textarea>
+                                @Html.TextAreaFor(m => m.WriterAbout, new { @class = "form-control", @placeholder = "Kendiniz hakkï¿½nda kï¿½sa bilgi (opsiyonel)", @rows = "3" })
+                                @Html.ValidationMessageFor(m => m.WriterAbout, "", new { @class = "text-danger small" })
                             </div>
                             
                             <div class="form-group">
-                                <button type="submit" class="btn form-control btn-success rounded submit px-3">Kayýt Ol</button>
+                                <button type="submit" class="btn form-control btn-success rounded submit px-3">Kayï¿½t Ol</button>
                             </div>
                             
                             <div class="form-group text-center">
                                 <p class="w-100">
-                                    <a href="@Url.Action("Index", "WriterLogin")" style="color: #007bff; text-decoration: none;">Zaten hesabýnýz var mý? Giriþ yapýn</a>
+                                    <a href="@Url.Action("Index", "WriterLogin")" style="color: #007bff; text-decoration: none;">Zaten hesabï¿½nï¿½z var mï¿½? Giriï¿½ yapï¿½n</a>
                                 </p>
                             </div>
                         }

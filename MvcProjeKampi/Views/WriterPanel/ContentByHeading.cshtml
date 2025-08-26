@@ -1,0 +1,163 @@
+@using EntityLayer.Concrete
+@model List<Content>
+@{
+    ViewBag.Title = "ContentByHeading";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>"@ViewBag.HeadingName" Baþlýðýnýn Ýçerikleri</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/WriterPanel/WriterHeading">Baþlýklarým</a></li>
+                    <li class="breadcrumb-item active">Ýçerikler</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="icon fas fa-check"></i> @TempData["SuccessMessage"]
+        </div>
+    }
+    
+    @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger alert-dismissible">
+            <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
+            <i class="icon fas fa-ban"></i> @TempData["ErrorMessage"]
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-header">
+            <div class="row">
+                <div class="col-8">
+                    <h3 class="card-title">Ýçerik Listesi</h3>
+                </div>
+                <div class="col-4 text-right">
+                    <a class="btn btn-success" href="/WriterPanel/AddContent?headingId=@ViewBag.HeadingId">
+                        <i class="fas fa-plus"></i> Yeni Ýçerik Ekle
+                    </a>
+                    <a class="btn btn-secondary" href="/WriterPanel/WriterHeading">
+                        <i class="fas fa-arrow-left"></i> Geri Dön
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="card-body p-0">
+            @if (Model != null && Model.Count > 0)
+            {
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th style="width: 5%">#</th>
+                            <th style="width: 50%">Ýçerik</th>
+                            <th style="width: 15%">Yazar</th>
+                            <th style="width: 10%">Durum</th>
+                            <th style="width: 15%">Tarih</th>
+                            <th style="width: 5%">Ýþlemler</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var content in Model)
+                        {
+                            <tr>
+                                <td>@content.ContentId</td>
+                                <td>
+                                    <div style="max-height: 100px; overflow: hidden;">
+                                        @if (content.ContentValue != null && content.ContentValue.Length > 200)
+                                        {
+                                            @Html.Raw(content.ContentValue.Substring(0, 200) + "...")
+                                        }
+                                        else
+                                        {
+                                            @Html.Raw(content.ContentValue ?? "Ýçerik bulunamadý")
+                                        }
+                                    </div>
+                                </td>
+                                <td>
+                                    <small>
+                                        <img src="@content.Writer.WriterImage" alt="@content.Writer.WriterName" 
+                                             style="width: 30px; height: 30px; object-fit: cover;" class="img-circle">
+                                        @content.Writer.WriterName @content.Writer.WriterSurname
+                                    </small>
+                                </td>
+                                <td>
+                                    @if (content.ContentStatus)
+                                    {
+                                        <span class="badge badge-success">Aktif</span>
+                                    }
+                                    else
+                                    {
+                                        <span class="badge badge-danger">Pasif</span>
+                                    }
+                                </td>
+                                <td>
+                                    <small>
+                                        <i class="far fa-calendar-alt"></i>
+                                        @content.ContentDate.ToString("dd.MM.yyyy")
+                                        <br />
+                                        <i class="far fa-clock"></i>
+                                        @content.ContentDate.ToString("HH:mm")
+                                    </small>
+                                </td>
+                                <td>
+                                    <div class="btn-group btn-group-sm">
+                                        <a href="/WriterPanel/EditContent/@content.ContentId" 
+                                           class="btn btn-info btn-sm" title="Düzenle">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <a href="/WriterPanel/DeleteContent/@content.ContentId" 
+                                           class="btn btn-danger btn-sm" title="Sil"
+                                           onclick="return confirm('Bu içeriði silmek istediðinizden emin misiniz?')">
+                                            <i class="fas fa-trash"></i>
+                                        </a>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <div class="mb-3">
+                        <i class="fas fa-file-alt fa-4x text-muted"></i>
+                    </div>
+                    <h4 class="text-muted">Bu baþlýk için henüz içerik bulunmuyor</h4>
+                    <p class="text-muted mb-4">Ýlk içeriðinizi oluþturmak için aþaðýdaki butonu kullanabilirsiniz.</p>
+                    <a href="/WriterPanel/AddContent?headingId=@ViewBag.HeadingId" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Ýlk Ýçeriði Oluþtur
+                    </a>
+                </div>
+            }
+        </div>
+        
+        @if (Model != null && Model.Count > 0)
+        {
+            <div class="card-footer">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <div class="float-right">
+                            <span class="text-muted">
+                                Bu baþlýk için toplam <strong>@Model.Count</strong> içerik bulunmaktadýr.
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</section>

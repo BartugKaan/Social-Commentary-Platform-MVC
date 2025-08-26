@@ -26,7 +26,6 @@ namespace MvcProjeKampi.Controllers
         [HttpPost]
         public ActionResult Index(string WriterMail, string WriterPassword)
         {
-            // Basit validation
             if (string.IsNullOrEmpty(WriterMail))
             {
                 ViewBag.ErrorMessage = "E-posta adresi boþ olamaz!";
@@ -84,56 +83,28 @@ namespace MvcProjeKampi.Controllers
         {
             try
             {
-                // Basit validation
-                if (string.IsNullOrEmpty(writer.WriterName))
-                {
-                    ViewBag.ErrorMessage = "Ad alaný boþ olamaz!";
-                    return View();
-                }
+                WriterValiator validationRules = new WriterValiator();
+                ValidationResult validationResults = validationRules.Validate(writer);
 
-                if (string.IsNullOrEmpty(writer.WriterSurname))
-                {
-                    ViewBag.ErrorMessage = "Soyad alaný boþ olamaz!";
-                    return View();
-                }
-
-                if (string.IsNullOrEmpty(writer.WriterMail))
-                {
-                    ViewBag.ErrorMessage = "E-posta alaný boþ olamaz!";
-                    return View();
-                }
-
-                if (string.IsNullOrEmpty(writer.WriterPassword))
-                {
-                    ViewBag.ErrorMessage = "Þifre alaný boþ olamaz!";
-                    return View();
-                }
-
-                if (writer.WriterPassword.Length < 6)
-                {
-                    ViewBag.ErrorMessage = "Þifre en az 6 karakter olmalýdýr!";
-                    return View();
-                }
-
-                // E-posta kontrolü
                 var existingWriter = _writerManager.GetWriterByEmail(writer.WriterMail);
                 if (existingWriter != null)
                 {
-                    ViewBag.ErrorMessage = "Bu e-posta adresi ile zaten bir hesap mevcut!";
-                    return View();
+                    ModelState.AddModelError("WriterMail", "Bu e-posta adresi ile zaten bir hesap mevcut!");
+                    return View(writer);
                 }
 
-                // Varsayýlan deðerler
-                if (string.IsNullOrEmpty(writer.WriterTitle))
-                    writer.WriterTitle = "Yazar";
-                
-                if (string.IsNullOrEmpty(writer.WriterImage))
-                    writer.WriterImage = "/AdminLTE-3.0.4/dist/img/user2-160x160.jpg";
+                if (!validationResults.IsValid)
+                {
+                    foreach (var error in validationResults.Errors)
+                    {
+                        ModelState.AddModelError(error.PropertyName, error.ErrorMessage);
+                    }
+                    return View(writer);
+                }
 
-                if (string.IsNullOrEmpty(writer.WriterAbout))
-                    writer.WriterAbout = "Henüz açýklama eklenmemiþ.";
+                SetDefaultValues(writer);
 
-                // Kaydet
+
                 _writerManager.WriterAdd(writer);
                 
                 TempData["SuccessMessage"] = "Kayýt baþarýlý! Þimdi giriþ yapabilirsiniz.";
@@ -143,8 +114,20 @@ namespace MvcProjeKampi.Controllers
             catch (System.Exception ex)
             {
                 ViewBag.ErrorMessage = "Kayýt sýrasýnda bir hata oluþtu!";
-                return View();
+                return View(writer);
             }
+        }
+
+        private void SetDefaultValues(Writer writer)
+        {
+            if (string.IsNullOrEmpty(writer.WriterTitle))
+                writer.WriterTitle = "Yazar";
+            
+            if (string.IsNullOrEmpty(writer.WriterImage))
+                writer.WriterImage = "/AdminLTE-3.0.4/dist/img/user2-160x160.jpg";
+
+            if (string.IsNullOrEmpty(writer.WriterAbout))
+                writer.WriterAbout = "Henüz açýklama eklenmemiþ.";
         }
 
         public ActionResult LogOut()

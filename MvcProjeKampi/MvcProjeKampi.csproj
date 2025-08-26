@@ -2439,6 +2439,18 @@
     <Content Include="Views\WriterPanel\WriterHeading.cshtml" />
     <Content Include="Views\WriterLogin\Index.cshtml" />
     <Content Include="Views\WriterLogin\Register.cshtml" />
+    <Content Include="Views\WriterPanel\EditProfile.cshtml" />
+    <Content Include="Views\WriterPanel\MyContents.cshtml" />
+    <Content Include="Views\WriterPanel\AddHeading.cshtml" />
+    <Content Include="Views\WriterPanel\EditHeading.cshtml" />
+    <Content Include="Views\WriterPanel\ContentByHeading.cshtml" />
+    <Content Include="Views\WriterPanel\Messages.cshtml" />
+    <Content Include="Views\WriterPanel\Inbox.cshtml" />
+    <Content Include="Views\WriterPanel\NewMessage.cshtml" />
+    <Content Include="Views\WriterPanel\Sendbox.cshtml" />
+    <Content Include="Views\WriterPanel\GetMessageDetails.cshtml" />
+    <Content Include="Views\WriterPanel\AddContent.cshtml" />
+    <Content Include="Views\WriterPanel\EditContent.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

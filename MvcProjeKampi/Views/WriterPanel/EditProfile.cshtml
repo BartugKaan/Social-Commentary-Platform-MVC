@@ -1,0 +1,118 @@
+@using EntityLayer.Concrete
+@model Writer
+@{
+    ViewBag.Title = "EditProfile";
+    Layout = "~/Views/Shared/_WriterLayout.cshtml";
+}
+
+<section class="content-header">
+    <div class="container-fluid">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+                <h1>Profili Düzenle</h1>
+            </div>
+            <div class="col-sm-6">
+                <ol class="breadcrumb float-sm-right">
+                    <li class="breadcrumb-item"><a href="/WriterPanel/WriterProfile">Profilim</a></li>
+                    <li class="breadcrumb-item active">Düzenle</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <div class="card card-primary">
+                    <div class="card-header">
+                        <h3 class="card-title">Profil Bilgilerini Düzenle</h3>
+                    </div>
+                    
+                    @if (ViewBag.ErrorMessage != null)
+                    {
+                        <div class="alert alert-danger mx-3 mt-3">
+                            @ViewBag.ErrorMessage
+                        </div>
+                    }
+                    
+                    @using (Html.BeginForm("EditProfile", "WriterPanel", FormMethod.Post, new { @class = "form-horizontal" }))
+                    {
+                        <div class="card-body">
+                            <div class="form-group row">
+                                <label for="WriterName" class="col-sm-3 col-form-label">Adýnýz</label>
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.WriterName, new { @class = "form-control", placeholder = "Adýnýzý giriniz" })
+                                    @Html.ValidationMessageFor(model => model.WriterName, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label for="WriterSurname" class="col-sm-3 col-form-label">Soyadýnýz</label>
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.WriterSurname, new { @class = "form-control", placeholder = "Soyadýnýzý giriniz" })
+                                    @Html.ValidationMessageFor(model => model.WriterSurname, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label for="WriterTitle" class="col-sm-3 col-form-label">Unvanýnýz</label>
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.WriterTitle, new { @class = "form-control", placeholder = "Unvanýnýzý giriniz" })
+                                    @Html.ValidationMessageFor(model => model.WriterTitle, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label for="WriterMail" class="col-sm-3 col-form-label">E-posta</label>
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.WriterMail, new { @class = "form-control", placeholder = "E-posta adresinizi giriniz", @readonly = "readonly" })
+                                    <small class="text-muted">E-posta adresi deðiþtirilemez</small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label for="WriterPassword" class="col-sm-3 col-form-label">Yeni Þifre</label>
+                                <div class="col-sm-9">
+                                    @Html.PasswordFor(model => model.WriterPassword, new { @class = "form-control", placeholder = "Yeni þifrenizi giriniz (boþ býrakýlýrsa deðiþmez)" })
+                                    @Html.ValidationMessageFor(model => model.WriterPassword, "", new { @class = "text-danger small" })
+                                    <small class="text-muted">Þifreyi deðiþtirmek istemiyorsanýz boþ býrakýn</small>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label for="WriterAbout" class="col-sm-3 col-form-label">Hakkýnýzda</label>
+                                <div class="col-sm-9">
+                                    @Html.TextAreaFor(model => model.WriterAbout, new { @class = "form-control", @rows = "4", placeholder = "Kendinizden bahsedin..." })
+                                    @Html.ValidationMessageFor(model => model.WriterAbout, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                            
+                            <div class="form-group row">
+                                <label for="WriterImage" class="col-sm-3 col-form-label">Profil Resmi URL</label>
+                                <div class="col-sm-9">
+                                    @Html.TextBoxFor(model => model.WriterImage, new { @class = "form-control", placeholder = "Profil resmi URL'inizi giriniz" })
+                                    @Html.ValidationMessageFor(model => model.WriterImage, "", new { @class = "text-danger small" })
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="card-footer">
+                            <div class="row">
+                                <div class="col-sm-9 offset-sm-3">
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-save"></i> Deðiþiklikleri Kaydet
+                                    </button>
+                                    <a href="/WriterPanel/WriterProfile" class="btn btn-secondary ml-2">
+                                        <i class="fas fa-times"></i> Ýptal
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

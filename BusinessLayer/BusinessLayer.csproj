@@ -93,6 +93,7 @@
     <Compile Include="ValidationRules\AdminValidator.cs" />
     <Compile Include="ValidationRules\CategoryValidatior.cs" />
     <Compile Include="ValidationRules\ContactValidator.cs" />
+    <Compile Include="ValidationRules\ContentValidator.cs" />
     <Compile Include="ValidationRules\HeadingValidator.cs" />
     <Compile Include="ValidationRules\MessageValidator.cs" />
     <Compile Include="ValidationRules\WriterValiator.cs" />
